@@ -44,7 +44,6 @@ public class Spawner : MonoBehaviour
 
     private void DeactivateResource(Resource resource)
     {
-        resource.ResetState();
         resource.gameObject.SetActive(false);
     }
 

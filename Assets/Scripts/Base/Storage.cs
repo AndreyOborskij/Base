@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class Storage : MonoBehaviour
 {
     [SerializeField] private Door _door;
+    [SerializeField] private ResourceDatabase _resourceDatabase;
 
     private List<Resource> _allResources;
-    private Resource _transferredResource;
 
     public event Action<int> Took;
 
@@ -28,15 +28,18 @@ public class Storage : MonoBehaviour
 
     private void TakeResource(Unit unit)
     {
-        IncreaseValue(unit);
-        unit.ReportFreed();
-        Took?.Invoke(_allResources.Count);
-    }
+        if (unit.HasResource == false)
+            return;
 
-    private void IncreaseValue(Unit unit)
-    {
-        _transferredResource = unit.GiveResourse();
-        _allResources.Add(_transferredResource);
-        _transferredResource.ReportCollection();
+        Resource resource = unit.GiveResourse();
+
+        _allResources.Add(resource);
+
+        _resourceDatabase.RemoveResource(resource);  
+
+        resource.ReportCollection();
+
+        Took?.Invoke(_allResources.Count);
+        unit.ReportFreed();
     }
 }

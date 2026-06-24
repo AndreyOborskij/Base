@@ -19,6 +19,8 @@ public class Unit : MonoBehaviour
             _mover.GoTo(_target.position);
     }
 
+    public bool HasResource => _bag.CarriedResource != null;
+
     public void TakeDirection(Resource resource)
     {
         _target = resource.transform;

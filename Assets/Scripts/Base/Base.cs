@@ -4,41 +4,43 @@ using UnityEngine;
 public class Base : MonoBehaviour
 {
     [SerializeField] private Locator _locator;
+    [SerializeField] private ResourceDatabase _resourceDatabase;
     [SerializeField] private List<Unit> _units;
-
-    private Resource _targetResource;
 
     private void OnEnable()
     {
-        foreach (var unit in _units)
+        foreach (Unit unit in _units)
         {
-            unit.Freed += GivePosition;
+            unit.Freed += GiveTask;
         }
     }
 
     private void Start()
     {
-        foreach (var unit in _units)
+        foreach (Unit unit in _units)
         {
-            GivePosition(unit);
+            GiveTask(unit);
         }
     }
 
     private void OnDisable()
     {
-        foreach (var unit in _units)
+        foreach (Unit unit in _units)
         {
-            unit.Freed += GivePosition;
+            unit.Freed -= GiveTask;
         }
     }
 
-    private void GivePosition(Unit unit)
+    private void GiveTask(Unit unit)
     {
-        _targetResource = _locator.Scan();
+        List<Resource> foundResources = _locator.Scan();
+        _resourceDatabase.UpdateResources(foundResources);
 
-        if (_targetResource == null)
+        Resource resource = _resourceDatabase.GetFreeResource();
+
+        if (resource == null)
             return;
 
-        unit.TakeDirection(_targetResource);
+        unit.TakeDirection(resource);
     }
 }
