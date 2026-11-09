@@ -11,24 +11,34 @@ public class Unit : MonoBehaviour
     private Transform _target;
     private Resource _sentResource;
 
+    public bool IsBusy => _isBusy;
+
     public event Action<Unit> Freed;
 
     private void Update()
     {
         if (_isBusy == true)
+        {
             _mover.GoTo(_target.position);
+        }    
     }
 
     public bool HasResource => _bag.CarriedResource != null;
 
-    public void TakeDirection(Resource resource)
+    public void TakeDirection(Transform target)
     {
-        _target = resource.transform;
+        if(target  == null)
+            return;
+
+        _target = target;
         _isBusy = true;
     }
 
     public void PickUpResource(Resource resource)
     {
+        if (HasResource == true)
+            return;
+
         resource.transform.SetParent(_bag.CarryPoint);
         resource.transform.localPosition = Vector3.zero;
 
@@ -36,9 +46,8 @@ public class Unit : MonoBehaviour
         _target = _door.transform;
     }
 
-    public Resource GiveResourse()
+    public Resource GiveResource()
     {
-        _isBusy = false;
         _sentResource = _bag.CarriedResource;
         _bag.Clear();
 
@@ -47,6 +56,12 @@ public class Unit : MonoBehaviour
 
     public void ReportFreed()
     {
+        _isBusy = false;
         Freed?.Invoke(this);
+    }
+
+    public void SetDoor(Door door)
+    {
+        _door = door;
     }
 }

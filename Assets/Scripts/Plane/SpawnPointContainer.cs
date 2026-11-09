@@ -9,6 +9,7 @@ public class SpawnPointContainer : MonoBehaviour
     private List<Transform> _busyPoints;
 
     public int BusyPoints => _busyPoints.Count;
+    public int AllPoints => _spawnPoints.Length;
 
     private void Awake()
     {

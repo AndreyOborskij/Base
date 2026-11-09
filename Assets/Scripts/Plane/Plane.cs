@@ -4,7 +4,8 @@ public class Plane : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private SpawnPointContainer _points;
-    [SerializeField] private int _maxResources = 4;
+
+    private int _maxResources;
 
     private void OnEnable()
     {
@@ -13,6 +14,7 @@ public class Plane : MonoBehaviour
 
     private void Start()
     {
+        _maxResources = _points.AllPoints;
         CreateResources();
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8147035328223736774}
   - component: {fileID: -8935318189217538603}
   - component: {fileID: 2088032510244220205}
-  - component: {fileID: 2229909206696000235}
+  - component: {fileID: 3197092442852148928}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -137,7 +137,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2229909206696000235
+--- !u!114 &3197092442852148928
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
