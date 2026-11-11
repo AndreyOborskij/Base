@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -13,22 +12,23 @@ public class Unit : MonoBehaviour
 
     public bool IsBusy => _isBusy;
 
-    public event Action<Unit> Freed;
-
     private void Update()
     {
         if (_isBusy == true)
         {
             _mover.GoTo(_target.position);
-        }    
+        }
     }
 
     public bool HasResource => _bag.CarriedResource != null;
 
     public void TakeDirection(Transform target)
     {
-        if(target  == null)
+        if (target == null)
+        {
+            StopMoving();
             return;
+        }
 
         _target = target;
         _isBusy = true;
@@ -50,18 +50,20 @@ public class Unit : MonoBehaviour
     {
         _sentResource = _bag.CarriedResource;
         _bag.Clear();
+        StopMoving();
 
         return _sentResource;
-    }
-
-    public void ReportFreed()
-    {
-        _isBusy = false;
-        Freed?.Invoke(this);
     }
 
     public void SetDoor(Door door)
     {
         _door = door;
+    }
+
+    private void StopMoving()
+    {
+        _mover.Stop();
+        _isBusy = false;
+        _target = null;
     }
 }

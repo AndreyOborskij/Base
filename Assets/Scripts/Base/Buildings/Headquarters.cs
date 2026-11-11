@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,21 +13,20 @@ public class Headquarters : MonoBehaviour
     [SerializeField] private BaseBuilder _baseBuilder;
     [SerializeField] private FlagController _flagController;
     [SerializeField] private ResourceReceiver _resourceReceiver;
+    [SerializeField] private Door _door;
 
     private BaseState _currentState;
     private Transform _target;
     private int _minCountUnit = 1;
 
-    public event Action SendBuild; 
+    public event Action SendBuild;
+
+    public bool CanBuild => _casern.Units.Count > _minCountUnit;
 
     private void OnEnable()
     {
-        foreach (Unit unit in _casern.Units)
-        {
-            unit.Freed += GiveTask;
-        }
-
         _casern.Created += TansferUnitToWork;
+        _door.Came += AcceptUnit;
     }
 
     private void Start()
@@ -39,15 +39,9 @@ public class Headquarters : MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (Unit unit in _casern.Units)
-        {
-            unit.Freed -= GiveTask;
-        }
-
         _casern.Created -= TansferUnitToWork;
+        _door.Came -= AcceptUnit;
     }
-
-    public bool CanBuild => _casern.Units.Count > _minCountUnit;
 
     public void SetState(BaseState baseState)
     {
@@ -56,18 +50,13 @@ public class Headquarters : MonoBehaviour
 
     public void RemoveUnit(Unit unit)
     {
-        unit.Freed -= GiveTask;
-
         _casern.RemoveUnit(unit);
     }
 
     public void AddUnit(Unit unit)
     {
-        unit.Freed += GiveTask;
-
         _casern.AddUnit(unit);
-
-        unit.ReportFreed();
+        GiveTask(unit);
     }
 
     public void Init(BaseBuilder baseBuilder, ResourceDatabase resourceDatabase)
@@ -80,6 +69,27 @@ public class Headquarters : MonoBehaviour
     public void BuildComplete()
     {
         _flagController.ResetState();
+    }
+
+    private void AcceptUnit(Unit unit)
+    {
+        Unit freeUnit = null;
+
+        _resourceReceiver.AcceptResource(unit);
+
+        foreach (Unit releaseUnit in _casern.Units)
+        {
+            if (releaseUnit.IsBusy == false)
+            {
+                freeUnit = releaseUnit;
+                break;
+            }
+        }
+
+        if (freeUnit != null)
+        {
+            GiveTask(freeUnit);
+        }
     }
 
     private void TryCreateUnit()
@@ -104,10 +114,8 @@ public class Headquarters : MonoBehaviour
         SendBuild?.Invoke();
     }
 
-
     private void TansferUnitToWork(Unit unit)
     {
-        unit.Freed += GiveTask;
         GiveTask(unit);
     }
 

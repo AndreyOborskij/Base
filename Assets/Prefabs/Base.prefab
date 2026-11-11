@@ -52,6 +52,7 @@ MonoBehaviour:
   _baseBuilder: {fileID: 0}
   _flagController: {fileID: 1449020975441052564}
   _resourceReceiver: {fileID: 1369714624219537079}
+  _door: {fileID: 3082349305970048680}
 --- !u!1 &722577731628638674
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +452,6 @@ GameObject:
   - component: {fileID: 7837981962407862143}
   - component: {fileID: 1645578591150336225}
   - component: {fileID: 5439689041627727858}
-  - component: {fileID: 2558954292351834829}
   - component: {fileID: 1449020975441052564}
   - component: {fileID: 8737214511798830824}
   m_Layer: 0
@@ -517,21 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flagController: {fileID: 1449020975441052564}
-  _baseBehaviour: {fileID: 2558954292351834829}
   _headquarters: {fileID: 2215061542220531114}
---- !u!114 &2558954292351834829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953217594951941847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eab51cd6bdf1c84098d507ffcc1db68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _flagController: {fileID: 1449020975441052564}
 --- !u!114 &1449020975441052564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +708,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _storage: {fileID: 7214125417856301222}
   _resourceDatabase: {fileID: 0}
-  _door: {fileID: 3082349305970048680}
 --- !u!1 &5182911530141108093
 GameObject:
   m_ObjectHideFlags: 0

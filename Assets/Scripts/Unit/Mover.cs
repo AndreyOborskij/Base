@@ -9,4 +9,9 @@ public class Mover : MonoBehaviour
     {
         _agent.SetDestination(targetPosition);
     }
+
+    public void Stop()
+    {
+        _agent.ResetPath();
+    }
 }

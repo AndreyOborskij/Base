@@ -793,7 +793,6 @@ GameObject:
   m_Component:
   - component: {fileID: 931959875}
   - component: {fileID: 931959874}
-  - component: {fileID: 931959876}
   - component: {fileID: 931959877}
   m_Layer: 0
   m_Name: BaseBuilder
@@ -816,6 +815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainBase: {fileID: 167489800}
   _prefabBase: {fileID: 5439689041627727858, guid: be3ed974a459b1b47b4058de54a30fe5, type: 3}
+  _resourceDatabase: {fileID: 931959877}
 --- !u!4 &931959875
 Transform:
   m_ObjectHideFlags: 0
@@ -831,20 +831,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &931959876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931959873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ca5ba72c3f7c7f46baa4b4d4960a69f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _builder: {fileID: 931959874}
-  _resourceDatabase: {fileID: 931959877}
 --- !u!114 &931959877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1703,6 +1689,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Base
       objectReference: {fileID: 0}
+    - target: {fileID: 2215061542220531114, guid: be3ed974a459b1b47b4058de54a30fe5, type: 3}
+      propertyPath: _door
+      value: 
+      objectReference: {fileID: 982678982}
     - target: {fileID: 2215061542220531114, guid: be3ed974a459b1b47b4058de54a30fe5, type: 3}
       propertyPath: _baseBuilder
       value: 

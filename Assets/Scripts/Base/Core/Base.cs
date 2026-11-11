@@ -1,24 +1,33 @@
+using System;
 using UnityEngine;
 
 public class Base : MonoBehaviour
 {
     [SerializeField] private FlagController _flagController;
-    [SerializeField] private BaseBehaviour _baseBehaviour;
     [SerializeField] private Headquarters _headquarters;
+
+    private Action<Base, Vector3, Unit> _buildAction;
+
+    public FlagController FlagController => _flagController;
 
     private void OnEnable()
     {
-        _baseBehaviour.StateChanged += OnStateChange;
+        _flagController.FlagPlaced += StateChange;
+        _flagController.BuildRequested += BuildStart;
         _headquarters.SendBuild += SentUnit;
+    }
+
+    private void Start()
+    {
+        _headquarters.SetState(BaseState.CreateUnit);
     }
 
     private void OnDisable()
     {
-        _baseBehaviour.StateChanged -= OnStateChange;
+        _flagController.FlagPlaced -= StateChange;
+        _flagController.BuildRequested -= BuildStart;
         _headquarters.SendBuild -= SentUnit;
     }
-
-    public FlagController FlagController => _flagController;
 
     public void TakePositionForBuild(Vector3 position)
     {
@@ -38,9 +47,10 @@ public class Base : MonoBehaviour
         _headquarters.AddUnit(unit);
     }
 
-    public void InitBuilder(BaseBuilder baseBuilder, ResourceDatabase resourceDatabase)
+    public void InitBuilder(BaseBuilder baseBuilder, ResourceDatabase resourceDatabase, Action<Base, Vector3, Unit> buildAction)
     {
         _headquarters.Init(baseBuilder, resourceDatabase);
+        _buildAction = buildAction;
     }
 
     public void BuildComplete()
@@ -48,22 +58,18 @@ public class Base : MonoBehaviour
         _headquarters.BuildComplete();
     }
 
-    private void SentUnit()
+    private void BuildStart(Vector3 position, Unit unit)
     {
-        _baseBehaviour.ChangeState(BaseState.CreateUnit);
+        _buildAction?.Invoke(this, position, unit);
     }
 
-    private void OnStateChange(BaseState baseState)
+    private void SentUnit()
     {
-        switch (baseState)
-        {
-            case BaseState.BuildBase:
-                _headquarters.SetState(baseState);
-                break;
+        _headquarters.SetState(BaseState.CreateUnit);
+    }
 
-            case BaseState.CreateUnit:
-                _headquarters.SetState(baseState);
-                break;
-        }
+    private void StateChange(BaseState baseState)
+    {
+        _headquarters.SetState(baseState);
     }
 }

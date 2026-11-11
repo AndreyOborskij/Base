@@ -1,22 +1,15 @@
 using System;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class FlagController : MonoBehaviour
 {
     [SerializeField] private Flag _prefabFlag;
 
     private Flag _flag;
-    private Base _base;
     private Unit _builder; 
 
     public event Action<BaseState> FlagPlaced;
-    public event Action<Base ,Vector3, Unit> BuildRequested;
-
-    private void Awake()
-    {
-        _base = GetComponent<Base>();
-    }
+    public event Action<Vector3, Unit> BuildRequested;
 
     public Transform FlagPosotion => _flag.position;
 
@@ -59,6 +52,6 @@ public class FlagController : MonoBehaviour
     private void CanBuild(Vector3 position, Unit unit)
     {
         if (_builder == unit)
-            BuildRequested?.Invoke(_base ,position, unit);
+            BuildRequested?.Invoke(position, unit);
     }
 }
